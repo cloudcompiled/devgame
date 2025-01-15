@@ -32,12 +32,12 @@ body {
 }
 #dice1-text{
     margin-top: -40px;
-    margin-left: -55px;
+    margin-left: -60px;
     position: absolute;
 }
 #dice2-text{
     margin-top: -40px;
-    margin-left: 145px;
+    margin-left: 140px;
     position: absolute;
 }
 
@@ -112,8 +112,9 @@ button:disabled {
     display: none;
 }
 .log {
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 20px;
+    margin-left: -10px;
 }
 
 
@@ -389,4 +390,24 @@ button.upgrade-btn {
     color: white;
     border: none;
     border-radius: 5px;
+}
+.mute-btn {
+    /* position: fixed;
+    top: 20px;
+    right: 20px; */
+    padding: 10px;
+    font-size: 50px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.mute-btn:hover {
+    transform: scale(1.1);
+}
+
+#start-popup {
+    height: 300px; width: 700px; margin-top: 200px; position: relative; margin-left: auto; margin-right: auto;
 }

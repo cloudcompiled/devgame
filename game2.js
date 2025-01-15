@@ -43,7 +43,7 @@ battleMusic.loop =true;
 screenMusic.loop = true;
 
 
-let playerHealth = 25;
+let playerHealth = 15;
 let playerShielded = false;
 let currentRoll1 = null;
 let currentRoll2 = null;
@@ -80,6 +80,13 @@ function rollDice(diceNum, playerRoll = true) {
             dice2Text.style.color = 'red';
         currentRoll2 = result;
     }
+
+    if (currentRoll1) {
+        dice1Element.style.backgroundImage = `url(images/${currentRoll1.replace(/[0-9\s]/g, '')}.png)`;
+    }
+    if (currentRoll2) {
+        dice2Element.style.backgroundImage = `url(images/${currentRoll2.replace(/[0-9\s]/g,'')}.png)`;
+    }
     return result;
 }
 
@@ -91,7 +98,7 @@ function log(message, num = 1) {
 }
 
 function updateHealthBars() {
-    playerHealthBar.style.width = (playerHealth / 25) * 100 + '%';
+    playerHealthBar.style.width = (playerHealth / 15) * 100 + '%';
     enemy1HealthBar.style.width = (enemy1.health / enemyMaxHealth()) * 100 + '%';
     if (enemy2) {
         enemy2HealthBar.style.width = (enemy2.health / enemyMaxHealth()) * 100 + '%';
@@ -180,13 +187,6 @@ function updateUI() {
     dice2Text.style.display = diceCount === 2 ? 'block' : 'none';
     dice2Container.style.display = diceCount === 2 ? 'flex' : 'none';
 
-    // Update dice displays
-    if (currentRoll1) {
-        dice1Element.style.backgroundImage = `url(images/${currentRoll1}.png)`;
-    }
-    if (currentRoll2) {
-        dice2Element.style.backgroundImage = `url(images/${currentRoll2}.png)`;
-    }
     // Update button states for dice 1
     rollButton.disabled = currentRoll1 !== null || turnEnded;
     reroll1Button.disabled = !currentRoll1 || reroll1Used || action1Used;
@@ -242,10 +242,10 @@ async function handlePlayerAction(diceNum) {
                 log(`${enemy1.name}'s shield blocked 1 damage!`);
             }
             enemy1.health -= damageAmount;
-            // alert( enemy1.health);
 
-            log(`Player attacked ${enemy1.name} with dice ${diceNum}! ${enemy1.name} lost ${damageAmount} health.`);
+            log(`Player attacked ${enemy1.name}! ${enemy1.name} lost ${damageAmount} health.`);
             if (enemy1.health <= 0) {
+                enemy1.health = 0
                 log(`Player defeated ${enemy1.name}!`);
             }
         } else if (enemy2) {
@@ -255,8 +255,9 @@ async function handlePlayerAction(diceNum) {
                 log(`${enemy2.name}'s shield blocked 1 damage!`);
             }
             enemy2.health -= damageAmount;
-            log(`Player attacked ${enemy2.name} with dice ${diceNum}! ${enemy2.name} lost ${damageAmount} health.`);
+            log(`Player attacked ${enemy2.name}! ${enemy2.name} lost ${damageAmount} health.`);
             if (enemy2.health <= 0) {
+                enemy2.health = 0
                 log(`Player defeated ${enemy2.name}!`);
             }
         }
@@ -268,7 +269,7 @@ async function handlePlayerAction(diceNum) {
     } else if (currentRoll.startsWith('Heal')) {
         const match = currentRoll.match(/Heal (\d+)/);
         const healAmount = match ? parseInt(match[1]) : 1;
-        playerHealth = Math.min(25, playerHealth + healAmount);
+        playerHealth = Math.min(15, playerHealth + healAmount);
         log(`Player healed with dice ${diceNum}!`);
     }
 
@@ -293,15 +294,20 @@ function advanceLevel() {
     battleMusic.pause();
     levelUpSound.play();
     diceContainer.style.display = 'none';
-    if (level === 1) {
+    if (level === 5) {
+        winMusic.play();
+        victoryPopup.style.display = 'flex';
+    } else if (level === 1) {
         upgradeOverlay.style.display = 'flex';
-    } else if (level === 2) {
+    } else if (diceCount < 2 ) {
         upgradeOverlay2.style.display = 'flex';
         choiceButtons.forEach(button => {
             button.addEventListener('click', () => {
                 if (button.dataset.upgrade == 'upgrade') {
-                    upgradeOverlay.style.display = 'flex';
                     upgradeOverlay2.style.display = 'none';
+                    upgradeOverlay.style.display = 'flex';
+                    faceSelection.style.display = 'none';
+                    upgradeOptions.style.display = 'flex';
                 } else {
                     diceCount++;
                     upgradeOverlay2.style.display = 'none';
@@ -312,12 +318,10 @@ function advanceLevel() {
 
             })
         });
-    } else if (level === 5) {
-        winMusic.play();
-        victoryPopup.style.display = 'flex';
-    }
-    else {
+    } else {
         upgradeOverlay.style.display = 'flex';
+        faceSelection.style.display = 'none';
+        upgradeOptions.style.display = 'flex';
     }
 }
 
@@ -440,7 +444,7 @@ function endGame() {
     use2Button.disabled = true;
     endTurnButton.disabled = true;
     lossPopup.style.display = 'flex';
-
+    battleMusic.stop();
     level = 1;
     diceCount = 1;
     enemyCount = 1;
@@ -533,7 +537,6 @@ function askQuestion(questionText, optionsArray) {
 }
 
 async function showTypingScreen() {
-    winMusic.pause();
     screenMusic.play();
     battleMusic.pause();
     let backgroundImg = "url(images/battle.png)";
@@ -543,10 +546,10 @@ async function showTypingScreen() {
     if (level == 1) {
         await askQuestion("So you want to build a game huh?", []);
         await askQuestion("Fine... the Dev Gods shall allow it... if you can win your battles. ", []);
-        await askQuestion("Here comes your first one!", ['continue']);
+        await askQuestion("Here comes your first one!", []);
     } else if (level == 2) {
         await askQuestion("So you've finally stopped procrastinating and are ready to start making your game then? ", []);
-        answer = await askQuestion("Which game engine will you use? ", ["Godot", "Unity", "Unreal Engine", "Uhh... guess I'll start googling 'Best Game Engine 2024'"]);
+        answer = await askQuestion("Which game engine will you use? ", ["Godot", "Unity", "Unreal Engine", "Uhh... guess I'll start googling 'Best Game Engine 2025'"]);
         if (answer < 3)
             await askQuestion("Seems like overkill for a web game, but who am I to judge ", []);
         else
@@ -602,11 +605,5 @@ async function showTypingScreen() {
     document.getElementById('game-container').style.display = 'flex';
     subtext.style.display = 'block';
     setLevelInfo();
-    // alert(`Response: ${answer2}`);
-
-    // const answer3 = await askQuestion("Are you sure about that?", ["Absolutely", "Not really"]);
-    // alert(`You selected: ${answer3}`);
 
 }
-
-//showTypingScreen();

@@ -52,8 +52,21 @@ endTurnButton.addEventListener('click', () => {
 startPopup.addEventListener('click', () => {
     startPopup.style.display = 'none';
     showTypingScreen();
-    textSound.play();
     screenMusic.play();
     setLevelInfo();
     updateUI();
+});
+
+const bgMusic = document.getElementById('bgMusic');
+const muteBtn = document.getElementById('mute-btn');
+let isMuted = false;
+
+
+// Toggle mute/unmute
+muteBtn.addEventListener('click', () => {
+    isMuted = !isMuted;
+    battleMusic.muted = isMuted; 
+    screenMusic.muted = isMuted;
+    winMusic.muted = isMuted;
+    muteBtn.textContent = isMuted ? '🔇' : '🔊';
 });
