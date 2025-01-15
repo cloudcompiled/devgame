@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style2.css?asdf">
+
+    <title>Developer vs. Dev Gods</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h1 id="round-name">Developer vs. Dev Gods</h1>
+    <h3 id="subtext">Roll the die/dice to attack the monster. You may re-roll the dice once each time. </h3>
+    <div id="desk-wrapper" style="display:none">
+        <div class="desk">
+            <div class="screen">
+                <div id="typingText" class="text"></div>
+                <div id="options" class="options" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-container" class="game-container">
+        <div class="enemy enemy1">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 id="enemy1-name">Enemy 1</h2>
+                <img id="enemy1-shield" src="images/shield_icon.png" style="display: block; width: 50px">
+            </div>
+            <div class="health-bar-container">
+                <div id="enemy1-health-bar" class="health-bar" style="width: 100%;">
+                    <span id="enemy1-health">3</span>
+                </div>
+            </div>
+        </div>
+        <div class="enemy enemy2">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 id="enemy2-name">Enemy 2</h2>
+                <img id="enemy2-shield" src="images/shield_icon.png" style="display: flex; width: 50px">
+            </div>
+            <div class="health-bar-container">
+                <div id="enemy2-health-bar" class="health-bar" style="width: 100%;">
+                    <span id="enemy2-health">3</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dice-container" id="dice-container" style="display: block">
+            <!-- <img id="dice-img" src="images/dice.gif" class="disabled"> -->
+            <div id="dice1-text"></div>
+            <div id="dice2-text"></div>
+
+            <div style="display: flex" id="dice-box">
+                <div class="dice" id="dice1">
+                    <div class="actions one">
+                        <button title="Re-roll" id="reroll1-btn" disabled>&#8635; </button>
+                        <button title="Use this roll" id="use1-btn" disabled>&#10004;</button>
+                    </div>
+                </div>
+                <div class="dice" id="dice2">
+                    <div class="actions two">
+                        <button title="Re-roll" id="reroll2-btn" disabled>&#8635;</button>
+                        <button title="Use this roll" id="use2-btn" disabled>&#10004;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="roll-btn">Roll Dice</button>
+            </div>
+
+
+            <div class="actions">
+                <button id="end-turn-btn" disabled>End Turn</button>
+            </div>
+        </div>
+        <div class="log" id="log"></div>
+        <div class="log disabled" id="log2"></div>
+
+        <div class="player">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h2>Player</h2>
+                <img id="player-shield" src="images/shield_icon.png" style="display: flex; width: 50px">
+
+            </div>
+            <div class="health-bar-container">
+                <div id="player-health-bar" class="health-bar" style="width: 100%;"></div>
+            </div>
+            <p><strong>Health:</strong> <span id="player-health">10</span></p>
+        </div>
+    </div>
+    <div class="popup-overlay disabled " id="popup-overlay">
+        <div class="popup">
+            <h2>Congratulations!</h2>
+            <p>You defeated the enemy!</p>
+            <button id="next-level-btn">Next Level</button>
+        </div>
+    </div>
+
+    <div class="popup-overlay disabled" id="upgrade-overlay">
+        <div> <img src="images/trophy2.png" style="width: 200px; height: 200px;"></div>
+        <div class="popup" id="face-upgrade">
+            <h2>Claim Your Reward!</h2>
+            <p>Pick a new upgraded face to add to your current die. </p>
+            <div id="upgrade-options">
+                <button title="Deals 2 attack when rolled" class="upgrade-btn" data-upgrade="Attack 2"> Attack 2 <img
+                        src="images/attack_icon.png"> </button>
+                <button title="Shields 2 attack when rolled" class="upgrade-btn" data-upgrade="Shield 2">Shield 2 <img
+                        src="images/shield_icon.png"> </button>
+                <button title="Heals 2 health when rolled" class="upgrade-btn" data-upgrade="Heal 2">Heal 2 <img
+                        src="images/heal_icon.png"> </button>
+            </div>
+            <div id="face-selection" style="display: none;">
+                <p>Select one of your die's current faces to replace:</p>
+                <div id="face-grid"></div>
+                <button id="cancel-face-select">Back</button>
+            </div>
+        </div>
+        <div> <img id="ribbon" src="images/levelup.png" style="width: auto; height: 100px;"></div>
+
+    </div>
+
+    <div class="popup-overlay disabled" id="upgrade2-overlay">
+        <div> <img id="ribbon2" src="images/levelup.png" style="width: auto; height: 100px;"></div>
+
+        <div> <img src="images/trophy2.png" style="width: 200px; height: 200px;"></div>
+
+        <div class="popup" id="face-upgrade" style="padding-top: 30px">
+            <h2>Nicely Done!</h2>
+            <p>Choose your reward</p>
+            <button class="choice-btn" data-upgrade="upgrade">Upgrade one face on the die</button>
+            <button class="choice-btn" data-upgrade="die2">Get a second die</button>
+        </div>
+    </div>
+    <div class="popup-overlay" id="victory-popup" style="height: 300px; width: 700px; display: none;">
+        <div style="display: flex;">
+            <div> <img src="images/trophy1.webp"
+                    style="width: 300px; height: 300px;  margin-left: -20px; margin-top: 15px"></div>
+
+        </div>
+        <div style="width: 300px; margin-top:20px; margin-left: 100px">
+            <h2> YOU DID IT!</h2>
+            <p>You stopped procrastinating and made your game. You battled bugs and errors and you didn't give in to
+                feature creep. You have made the Dev Gods proud. </p>
+            <p>Now go take a nap, you deserve it! </p>
+            <br>
+            <button id="restart" onClick="window.location.reload();">Start Over</button>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="start-popup" style="height: 300px; width: 700px; margin-top: 200px; ">
+        <div style="display: flex;">
+            <div> <img src="images/erros.webp"
+                    style="width: 335px; height: 340px;  margin-left: -20px; margin-top: -20px;"></div>
+
+        </div>
+        <div style="width: 300px; margin-top: -300px; margin-left: 350px">
+            <h2> Are you ready? </h2>
+
+            <br>
+            <button id="start">Let's Begin!</button>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="loss-popup" style="height: 280px; width: 700px; display: none;">
+        <div style="display: flex;">
+            <div> <img src="images/404.webp"
+                    style="width: 300px; height: 320px;  margin-left: -20px; margin-top: -20px"></div>
+
+        </div>
+        <div style="width: 300px; margin-top: 10px; margin-left: 50px">
+            <h2> May your game RIP</h2>
+            <p>Better luck next time! </p>
+            <br>
+            <button id="restart" onClick="window.location.reload();">Start Over</button>
+        </div>
+    </div>
+
+    <script src="game2_target_selection.js"></script>
+    <script src="game2.js"></script>
+    <script src="event_listeners.js"></script>
+
+
+</body>
+
+</html>

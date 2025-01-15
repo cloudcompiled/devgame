@@ -1,0 +1,392 @@
+
+body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.player, .enemy {
+    width: 200px;
+    text-align: center;
+}
+.dice {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    background: url(images/shield.png) no-repeat;
+    background-size: cover;
+    /* border: 3px solid #333; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px auto;
+    /* border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
+}
+
+#dice-box{
+    margin-top: -100px;
+}
+#dice1-text{
+    margin-top: -40px;
+    margin-left: -55px;
+    position: absolute;
+}
+#dice2-text{
+    margin-top: -40px;
+    margin-left: 145px;
+    position: absolute;
+}
+
+#reroll2-btn, #reroll1-btn , #use1-btn, #use2-btn{
+    font-size: 30px;
+    font-weight: lighter;
+    padding: 5px 15px 5px 15px;
+    border-width: 4px 4px;
+    border-color: black;
+}
+.health-bar-container {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.health-bar {
+    position: absolute;
+    height: 100%;
+    background-color: green;
+    border-radius: 5px;
+    transition: width 0.3s;
+}
+.actions {
+    margin-top: 0px;
+}
+
+.actions.one{
+    margin-left: -50px;
+    margin-top: 150px;
+    display: flex;
+
+}
+
+.actions.two{
+    margin-left: -10px;
+    margin-top: 100px;
+    display: flex;
+}
+
+#use1-btn, #use2-btn{
+    background-color: rgb(119, 218, 119);
+    color: rgb(51, 51, 51);
+}
+#dice2 {
+    margin-left: 90px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #0056b3;
+}
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    display:none;
+}
+
+.disabled {
+    display: none;
+}
+.log {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+
+/* screen*/
+
+#desk-wrapper, #zoom-left{
+overflow:hidden;
+width: 1200px;
+height: 800px;
+margin-left: auto;
+margin-right: auto;
+}
+.desk {
+width: 1200px;
+height: 800px;
+background: url(images/desk2.webp) no-repeat;
+background-size: cover;
+background-position: center center;
+animation: scale-in 2s ease forwards;
+}
+
+@keyframes scale-in {
+/* At the beginning of the animation */
+0% {
+/* Scale the element to its original size */
+transform: scale(1, 1);
+}
+/* At the middle of the animation */
+50% {
+/* Scale the element to 1.5 times its original size */
+transform: scale(1.25, 1.25);
+}
+/* At the end of the animation */
+100% {
+/* Scale the element back to its original size */
+transform: scale(1.5, 1.5);
+}
+}
+
+.screen {
+background-color: black;
+color: #00ff00;
+font-family: 'Courier New', Courier, monospace;
+margin: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 500px;
+overflow: hidden;
+}
+
+.screen {
+width: 395px;
+height: 200px;
+margin-left: 410px;
+margin-top: 223px;
+position: absolute;
+background: #111;
+border: 2px solid #00ff00;
+box-shadow: 0 0 20px #00ff00;
+border: 2px solid #1054ff;
+box-shadow: 0 0 20px #0e24f0;
+padding: 20px;
+overflow: hidden;
+}
+
+#game-container {
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+    width: 1400px;
+    height: 850px;
+    background: url(images/battle.png) no-repeat; 
+    background-size: 1400px 850px;
+    background-position-y: -20px;
+    background-position-x: -20px;
+
+    display: none;
+}
+
+  .enemy .health-bar-container{
+    margin-top: -350px;
+    margin-left: 330px;
+  }
+
+  .player{
+    margin: -670px 10px 0 1150px;
+    position: absolute;
+  }
+
+  .dice-container{
+    position: absolute;
+    margin-left: 600px;
+    margin-top: 700px;
+  }
+
+  #enemy1-name{
+    position: absolute;
+    margin-left: 250px;
+    margin-top: -730px;
+    font-size: 25px;
+  }
+
+  .enemy2 .health-bar-container {
+    position: absolute;
+    margin-left: -570px;
+    margin-top: -350px;
+    width: 200px;
+  }
+
+  #enemy2-name {
+    position: absolute;
+    margin-left: -550px;
+    margin-top: -730px;
+  }
+
+  #enemy1-shield, #enemy2-shield {
+    width: 40px;
+    position: absolute;
+    margin-top: -750px;
+  }
+  #enemy2-shield {
+    margin-left: -600px;
+  }
+  #enemy1-shield {
+    margin-left: -750px;
+  }
+
+  #log{
+    position:absolute;
+    margin-left:300px;
+    margin-top: 400px;
+    font-size: 20px;
+    text-align: center;
+}
+
+  .text {
+    white-space: pre-wrap;
+    overflow: hidden;
+}
+
+.cursor {
+    display: inline-block;
+    background-color: #00ff00;
+    width: 10px;
+    height: 20px;
+    margin-left: 2px;
+    animation: blink 0.5s step-end infinite alternate;
+}
+
+.options {
+    margin-top: 20px;
+}
+
+.option {
+    background-color: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.option.active {
+    background-color: #00ff00;
+    color: black;
+}
+
+@keyframes blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
+.popup-overlay{
+    position: absolute;
+    margin-top: -500px;
+    margin-left: 550px;
+    /* background-color: rgb(167, 227, 215);
+    background-color: rgb(245, 237, 207); */
+
+    width: 650px;
+    height: 400px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border: solid #000;
+    border-color:rgb(0, 160, 208); 
+    border-width: 10px;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+
+}
+
+#upgrade-options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button.upgrade-btn {
+    padding: 7px 14px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
+    color: rgb(60, 60, 60);
+    border-color: rgb(54, 54, 54);
+    border-width: 3px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.upgrade-btn:hover {
+    background-color: rgb(198, 198, 198);
+}
+#ribbon{
+    margin-top: -70px;
+    margin-left: -650px;
+}
+
+#ribbon2 {
+    position: absolute;
+    margin-left: 100ps;
+    margin-top: -70px;
+
+}
+#face-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 300px;
+}
+
+.face-option {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: white;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.face-option:hover {
+    border-color: #666;
+    background: #f0f0f0;
+}
+
+#cancel-face-select {
+    margin: 10px auto;
+    padding: 5px 15px;
+    display: block;
+    cursor: pointer;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}

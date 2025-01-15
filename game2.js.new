@@ -1,0 +1,117 @@
+// Update enemy references and health tracking
+const enemy1HealthElement = document.getElementById('enemy1-health');
+const enemy2HealthElement = document.getElementById('enemy2-health');
+const enemy1HealthBar = document.getElementById('enemy1-health-bar');
+const enemy2HealthBar = document.getElementById('enemy2-health-bar');
+
+let enemy1 = { name: 'Enemy 1', health: 3 };
+let enemy2 = { name: 'Enemy 2', health: 3 };
+
+function updateHealthBars() {
+    playerHealthBar.style.width = (playerHealth / 10) * 100 + '%';
+    enemy1HealthBar.style.width = (enemy1.health / enemyMaxHealth()) * 100 + '%';
+    enemy2HealthBar.style.width = (enemy2.health / enemyMaxHealth()) * 100 + '%';
+    enemy1HealthElement.textContent = enemy1.health;
+    enemy2HealthElement.textContent = enemy2.health;
+}
+
+async function handlePlayerAction(diceNum) {
+    const currentRoll = diceNum === 1 ? currentRoll1 : currentRoll2;
+    
+    if (currentRoll.startsWith('Attack')) {
+        const damageAmount = currentRoll === 'Attack 2' ? 2 : 1;
+        // Ask player which enemy to attack
+        const options = [
+            { text: `Attack ${enemy1.name} (${enemy1.health} HP)`, value: 'enemy1' },
+            { text: `Attack ${enemy2.name} (${enemy2.health} HP)`, value: 'enemy2' }
+        ];
+        const target = await askQuestion('Choose a target:', options);
+        
+        if (target === 'enemy1') {
+            enemy1.health -= damageAmount;
+            log(`Player attacked ${enemy1.name} with dice ${diceNum}! ${enemy1.name} lost ${damageAmount} health.`);
+            if (enemy1.health <= 0) {
+                log(`Player defeated ${enemy1.name}!`);
+            }
+        } else {
+            enemy2.health -= damageAmount;
+            log(`Player attacked ${enemy2.name} with dice ${diceNum}! ${enemy2.name} lost ${damageAmount} health.`);
+            if (enemy2.health <= 0) {
+                log(`Player defeated ${enemy2.name}!`);
+            }
+        }
+    } else if (currentRoll === 'Shield') {
+        log(`Player shielded with dice ${diceNum}! No effect this turn.`);
+    } else if (currentRoll === 'Heal') {
+        playerHealth = Math.min(10, playerHealth + 2);
+        log(`Player healed with dice ${diceNum}! Gained 2 health.`);
+    }
+
+    if (enemy1.health <= 0 && enemy2.health <= 0) {
+        log(`Player defeated all enemies! Advancing to level ${level + 1}.`);
+        advanceLevel();
+        return;
+    }
+
+    if (diceNum === 1) {
+        action1Used = true;
+    } else {
+        action2Used = true;
+    }
+    updateUI();
+}
+
+function handleEnemyTurn() {
+    // Enemy gets number of actions based on player's dice count
+    const actionCount = diceCount;
+    
+    // Each living enemy gets to act
+    if (enemy1.health > 0) {
+        for (let i = 0; i < actionCount; i++) {
+            const randomNumber = Math.floor(Math.random() * diceFaces.length);
+            const enemyRoll = diceFaces[randomNumber];
+            
+            if (enemyRoll === 'Attack') {
+                playerHealth -= 1;
+                log(`${enemy1.name} attacked! Player lost 1 health.`);
+            } else if (enemyRoll === 'Shield') {
+                log(`${enemy1.name} shielded! No effect this turn.`);
+            } else if (enemyRoll === 'Heal') {
+                enemy1.health = Math.min(enemyMaxHealth(), enemy1.health + 2);
+                log(`${enemy1.name} healed! Gained 2 health.`);
+            }
+        }
+    }
+    
+    if (enemy2.health > 0) {
+        for (let i = 0; i < actionCount; i++) {
+            const randomNumber = Math.floor(Math.random() * diceFaces.length);
+            const enemyRoll = diceFaces[randomNumber];
+            
+            if (enemyRoll === 'Attack') {
+                playerHealth -= 1;
+                log(`${enemy2.name} attacked! Player lost 1 health.`);
+            } else if (enemyRoll === 'Shield') {
+                log(`${enemy2.name} shielded! No effect this turn.`);
+            } else if (enemyRoll === 'Heal') {
+                enemy2.health = Math.min(enemyMaxHealth(), enemy2.health + 2);
+                log(`${enemy2.name} healed! Gained 2 health.`);
+            }
+        }
+    }
+
+    if (playerHealth <= 0) {
+        log(`You were defeated by the enemies!`);
+        return;
+    }
+
+    // Reset for player's next turn
+    turnEnded = false;
+    currentRoll1 = null;
+    currentRoll2 = null;
+    reroll1Used = false;
+    reroll2Used = false;
+    action1Used = false;
+    action2Used = false;
+    updateUI();
+}
